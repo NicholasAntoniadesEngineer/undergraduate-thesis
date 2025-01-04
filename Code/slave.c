@@ -3,25 +3,27 @@
 #include "library.h"
 
 #define STM32F051
+#define SLAVE_NUMBER 1 
 
-// Function declarations
 static void init_system(void);
-static int receive_message(void);
-static int receive_position(int message);
+static bool is_message_for_this_slave(int received_message);
+static int receive_position(void);
 static void update_output(int position);
+static void set_default_output(void);
 
 int main(void) 
 {
     init_system();
-    int current_message = 0;
-    int current_position = 0;
+    set_default_output();
 
     while(1) 
     {
-        current_message = receive_message();
-        if(current_message == 1) {  // adjust this to the correct slave number
-            current_position = receive_position(current_message);
-            update_output(current_position);
+        int received_message = USART1_receive();
+        
+        if(is_message_for_this_slave(received_message)) 
+        {
+            int position = receive_position();
+            update_output(position);
         }
     }
     return 0;
@@ -32,23 +34,30 @@ static void init_system(void)
     libs_init_leds();
     libs_init_switches();
     libs_init_USART1();
+    // Initialize GPIOB for output
+    // ... (add any necessary GPIO initialization)
 }
 
-static int receive_message(void)
+static bool is_message_for_this_slave(int received_message)
 {
-    return USART1_receive();
+    return received_message == SLAVE_NUMBER;
 }
 
-static int receive_position(int message)
+static int receive_position(void)
 {
-    libs_delay(30);
+    libs_delay(30);  // Small delay to ensure data is ready
     return USART1_receive();
 }
 
 static void update_output(int position)
 {
     GPIOB->ODR = position;
-    libs_delay(200);
-    GPIOB->ODR = 0b111;
+    libs_delay(200);  // Hold the position briefly
+    set_default_output();
+}
+
+static void set_default_output(void)
+{
+    GPIOB->ODR = 0b111;  // Default state when not actively showing position
 }
 

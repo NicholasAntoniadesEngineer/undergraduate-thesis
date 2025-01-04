@@ -4,7 +4,6 @@
 
 #define STM32F051
 
-// Function declarations
 static void init_system(void);
 static int handle_button_input(int current_slave);
 static int process_pot_value(int prev_value);
