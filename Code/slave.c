@@ -26,6 +26,7 @@ int main(void)
             update_output(position);
         }
     }
+    
     return 0;
 }
 
@@ -34,8 +35,6 @@ static void init_system(void)
     libs_init_leds();
     libs_init_switches();
     libs_init_USART1();
-    // Initialize GPIOB for output
-    // ... (add any necessary GPIO initialization)
 }
 
 static bool is_message_for_this_slave(int received_message)
