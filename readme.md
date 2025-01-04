@@ -12,18 +12,11 @@ Despite this issue, the system’s overall cost is substantially lower than comm
 
 ## Features
 
-- **Serial Communication**: Advanced serial communication hardware for control and feedback.
+- **Serial Communication**: Serial communication hardware for control and feedback.
 - **Sensor Integration**: On-board temperature and current sensors for real-time monitoring.
 - **Wide Current Range**: Compatible with a large range of servomotors.
 - **Master-Slave Architecture**: Centralized control of multiple slave controllers.
 - **Cost-Effective**: Lower cost compared to standard servomotor controllers on the market.
-
-## Tested Components
-
-- Serial communication hardware
-- Temperature sensors
-- Current sensors
-- Microcontroller-based control logic
 
 ## Issues and Future Work
 
@@ -40,9 +33,3 @@ This repository contains all design files, code, and documentation related to th
 - Test scripts for sensor and communication modules
 - Documentation and reports
 
-## Getting Started
-
-To begin working with the controller board, clone the repository and review the design files and documentation. Follow the instructions for programming the microcontroller and testing the system components.
-
-```bash
-git clone https://github.com/your-username/your-repo.git
