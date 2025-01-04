@@ -4,39 +4,51 @@
 
 #define STM32F051
 
+// Function declarations
+static void init_system(void);
+static int receive_message(void);
+static int receive_position(int message);
+static void update_output(int position);
 
-int main(void) {
-    // initialisations here
-	libs_init_leds();
-	libs_init_switches();
-	libs_init_USART1();
-    int slave_num;
-    int potvalue;
-	
-	
-    // hang in an infinite loop
-    while(1) {
+int main(void) 
+{
+    init_system();
+    int current_message = 0;
+    int current_position = 0;
 
-    	//Receive
-        
-
-		message = USART1_receive();
-        if(message == 1){           //adjust this to the correct slave number
-		    libs_delay(30);
-            position = USART1_receive();    
+    while(1) 
+    {
+        current_message = receive_message();
+        if(current_message == 1) {  // adjust this to the correct slave number
+            current_position = receive_position(current_message);
+            update_output(current_position);
         }
-		libs_delay(30);
-
-        } 
-	
-    	
-    	//Receive
-		GPIOB ->ODR = USART1_receive();
-		libs_delay(200);
-    	GPIOB ->ODR = 0b111;
-
     }
-    return 0;  // keep compiler happy with a return code.
+    return 0;
+}
 
+static void init_system(void)
+{
+    libs_init_leds();
+    libs_init_switches();
+    libs_init_USART1();
+}
+
+static int receive_message(void)
+{
+    return USART1_receive();
+}
+
+static int receive_position(int message)
+{
+    libs_delay(30);
+    return USART1_receive();
+}
+
+static void update_output(int position)
+{
+    GPIOB->ODR = position;
+    libs_delay(200);
+    GPIOB->ODR = 0b111;
 }
 
