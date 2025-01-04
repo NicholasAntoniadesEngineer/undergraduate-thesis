@@ -6,8 +6,8 @@
 
 void libs_init_leds(void) 
 {
-    RCC -> AHBENR |= RCC_AHBENR_GPIOBEN; //Enabling the GPIAO  clock in the RCC AHB periperal clock enableregister
-    GPIOB -> MODER = 0x5555;             //Setting the LEDS as outpouts in the GPIOB mode register
+	RCC -> AHBENR |= RCC_AHBENR_GPIOBEN; //Enabling the GPIAO  clock in the RCC AHB periperal clock enableregister
+	GPIOB -> MODER = 0x5555;             //Setting the LEDS as outpouts in the GPIOB mode register
 }
 
 void libs_init_switches(void) 
@@ -19,24 +19,24 @@ void libs_init_switches(void)
 
 void libs_init_ADC_8bit(void)
 {
-    RCC -> AHBENR |= RCC_AHBENR_GPIOAEN; //Enabling the GPIAO  clock in the RCC AHB periperal clock enableregister
-    GPIOA -> MODER |= GPIO_MODER_MODER5;
-    GPIOA -> MODER |= GPIO_MODER_MODER6;
-    RCC -> APB2ENR |= RCC_APB2ENR_ADCEN; //Enabling the ADC clock in the RCC APB  periperal clock enableregister
-    ADC1 -> CFGR1 |= 0x10;               //Setting the ADC allignment in the ADC configuration register 1
-    ADC1 -> CR |= ADC_CR_ADEN;           //Enabling the ADC by setting the ADEN(ADC enable bit) in the ADC Control Register
-    while((ADC1 -> ISR & 0x01) ==0 );    //Waiting for the ADRDY pin to let us know the ADC is ready.
+	RCC -> AHBENR |= RCC_AHBENR_GPIOAEN; //Enabling the GPIAO  clock in the RCC AHB periperal clock enableregister
+	GPIOA -> MODER |= GPIO_MODER_MODER5;
+	GPIOA -> MODER |= GPIO_MODER_MODER6;
+	RCC -> APB2ENR |= RCC_APB2ENR_ADCEN; //Enabling the ADC clock in the RCC APB  periperal clock enableregister
+	ADC1 -> CFGR1 |= 0x10;               //Setting the ADC allignment in the ADC configuration register 1
+	ADC1 -> CR |= ADC_CR_ADEN;           //Enabling the ADC by setting the ADEN(ADC enable bit) in the ADC Control Register
+	while((ADC1 -> ISR & 0x01) ==0 );    //Waiting for the ADRDY pin to let us know the ADC is ready.
 }
 
 void libs_init_TIM6(uint32_t arr, uint32_t psc)
-{
-    RCC -> APB1ENR |= (1 << 4);
-    TIM6 -> PSC = psc;
-    TIM6 -> ARR = arr;
-    TIM6 -> DIER |= TIM_DIER_UIE;
-    TIM6 -> CR1 |= TIM_CR1_CEN;
-    TIM6 -> CR1 |= TIM_CR1_ARPE;
-    *(uint32_t *)(0xE000E100) |= (1 << 17);
+	{
+	RCC -> APB1ENR |= (1 << 4);
+	TIM6 -> PSC = psc;
+	TIM6 -> ARR = arr;
+	TIM6 -> DIER |= TIM_DIER_UIE;
+	TIM6 -> CR1 |= TIM_CR1_CEN;
+	TIM6 -> CR1 |= TIM_CR1_ARPE;
+	*(uint32_t *)(0xE000E100) |= (1 << 17);
 }
 
 void libs_init_USART1(void)
