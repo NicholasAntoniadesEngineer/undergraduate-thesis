@@ -5,7 +5,10 @@
  ******************************************************************************/
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include "stm32f0xx.h"
+#include "servo_controller.h"
 
 /**
  * @brief Process incoming and outgoing messages
