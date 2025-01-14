@@ -1,3 +1,12 @@
+/**
+  ******************************************************************************
+  * @file           : servo_controller.h
+  * @brief          : Servo controller header file
+  * @details        : Servo controller state and configuration structures
+  * @author         : Nicholas Antoniades
+  ******************************************************************************
+  */
+
 #ifndef SERVO_CONTROLLER_H_
 #define SERVO_CONTROLLER_H_
 

@@ -1,9 +1,11 @@
-/*
- * stm32_lib.h
- *
- * Created on: 24 Apr 2020
- * Author: Nicholas Antoniades
- */
+/**
+  ******************************************************************************
+  * @file           : stm32_lib.h
+  * @brief          : STM32 library header file
+  * @details        : STM32 library state and configuration structures
+  * @author         : Nicholas Antoniades
+  ******************************************************************************
+  */
 
 #ifndef STM32_LIB_H_
 #define STM32_LIB_H_

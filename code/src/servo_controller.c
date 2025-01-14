@@ -1,3 +1,12 @@
+/**
+  ******************************************************************************
+  * @file           : servo_controller.c
+  * @brief          : Servo controller implementation
+  * @details        : Servo controller state and configuration structures
+  * @author         : Nicholas Antoniades
+  ******************************************************************************
+  */
+
 #include "servo_controller.h"
 
 // Private function prototypes

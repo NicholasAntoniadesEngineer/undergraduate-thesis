@@ -3,7 +3,6 @@
   * @file           : stm32_bsp.c
   * @brief          : Combined Board Support Package implementation
   * @details        : Encapsulates HAL and BSP functions for all prototypes
-  * @date           : 2024
   * @author         : Nicholas Antoniades
   ******************************************************************************
   */

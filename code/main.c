@@ -1,13 +1,14 @@
-/******************************************************************************
- * @file    main.c
- * @brief   Main program for servo controller system
- * @version 1.0
- ******************************************************************************/
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program for servo controller system
+  * @author         : Nicholas Antoniades
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 #include <stdbool.h>
-#include "stm32f0xx.h"
 #include "servo_controller.h"
 
 /**

@@ -1,23 +1,25 @@
-/*
- * Library.c
- * Created on: 24 Apr 2020
- * Author: Nicholas Antoniades
- */
+/**
+  ******************************************************************************
+  * @file           : stm32_lib.c
+  * @brief          : STM32 library implementation
+  * @details        : STM32 library state and configuration structures
+  * @author         : Nicholas Antoniades
+  ******************************************************************************
+  */
 
-#define STM32F051
-#include "stm32f0xx.h"
+
 #include <stdint.h>
 #include "stm32_lib.h"
-#include <stm32f0xx_exti.h>
-#include "stm32f051x8.h"
 #include "stm32_bsp.h"
 
-void stm32_lib_port_init(port_config_t *port_config) {
+void stm32_lib_port_init(port_config_t *port_config) 
+{
 	if (!port_config) return;
 
 	// Initialize GPIOA
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
-	for (int i = 0; i < port_config->num_pins_a; i++) {
+	for (int i = 0; i < port_config->num_pins_a; i++) 
+	{
 		GPIOA->MODER &= ~(0x3 << (port_config->pins_a[i].pin * 2));
 		GPIOA->MODER |= (port_config->pins_a[i].mode << (port_config->pins_a[i].pin * 2));
 		GPIOA->PUPDR &= ~(0x3 << (port_config->pins_a[i].pin * 2));
@@ -26,7 +28,8 @@ void stm32_lib_port_init(port_config_t *port_config) {
 
 	// Initialize GPIOB
 	RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
-	for (int i = 0; i < port_config->num_pins_b; i++) {
+	for (int i = 0; i < port_config->num_pins_b; i++) 
+	{
 		GPIOB->MODER &= ~(0x3 << (port_config->pins_b[i].pin * 2));
 		GPIOB->MODER |= (port_config->pins_b[i].mode << (port_config->pins_b[i].pin * 2));
 		GPIOB->PUPDR &= ~(0x3 << (port_config->pins_b[i].pin * 2));
@@ -45,12 +48,12 @@ void stm32_lib_init_pwm(int frequency)
 	RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;	 					// Enable TIM2
 	GPIOB->MODER |= GPIO_MODER_MODER11_1;					// set PB10 to AF
 	GPIOB->AFR[1] |= (GPIO_AFRH_AFR11_AF2&(0b10<<12)); 		// Enable AF2 for PB10 in GPIOB AFR10
-	TIM2->CCMR2 |= (TIM_CCMR2_OC4M_2 | TIM_CCMR2_OC4M_1); // PWM Mode 1 	// PWM Mode 1
+	TIM2->CCMR2 |= (TIM_CCMR2_OC4M_2 | TIM_CCMR2_OC4M_1); 	// PWM Mode 1 	// PWM Mode 1
 	TIM2->ARR = frequency; 									// Setting signal frequency
 	TIM2->PSC = 0;											// Setting signal prescalar
 	TIM2->CCR4 = frequency/2; 								// PWM Duty cycle based on fractions of ARR
 	TIM2->CCER |= TIM_CCER_CC4E; 							// Compare 3 output enable
-	//TIM2->CR1 |= TIM_CR1_CEN;    //Counter enable
+	//TIM2->CR1 |= TIM_CR1_CEN;    							//Counter enable
 }
 
 // Initializing the ADC
@@ -170,7 +173,7 @@ void stm32_lib_init_usart1(void)
 {
 	// Must enable usart1_DE and the associated pins AF
 	// Program the M bits in USARTx_CR1 to define the word length.
-	//Program the number of stop bits in USARTx_CR2.
+	// Program the number of stop bits in USARTx_CR2.
 	RCC->APB2ENR |= RCC_APB2ENR_USART1EN; 				// enable clock for UART1
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN; 					// enable clock to port a
 	GPIOA->MODER |= GPIO_MODER_MODER9_1; 				// Set PA9 to AF mode
@@ -178,7 +181,7 @@ void stm32_lib_init_usart1(void)
 	GPIOA->AFR[1] = 0b00000000000000000000000100010000; // Map AF1 for PA9 and PA10
 	USART1->CR1 &=~ USART_CR1_M; 						// clear M0(bit 12) of USARTx_CR1
 	SystemCoreClockUpdate(); 							// define clock speed
-	USART1->BRR = SystemCoreClock/115200;		     		// set baud rate to 115.2kbps for oversampling by 16
+	USART1->BRR = SystemCoreClock/115200;		     	// set baud rate to 115.2kbps for oversampling by 16
 	USART1->CR1 &=~ USART_CR1_PCE;						// no parity
 	USART1->CR2 &=~ USART_CR2_STOP;						// 1 stop bit
 	USART1->CR1 |= USART_CR1_UE;						// Enable USART1
@@ -189,7 +192,6 @@ void stm32_lib_init_usart1(void)
 void stm32_lib_usart1_transmit(unsigned char DataToTx)
 {
 	// wait until TXE = 1 before writing int tdr
-
 	USART1 -> TDR = DataToTx; 					// write character �c� to the USART1_TDR
 	while((USART1 -> ISR & USART_ISR_TC) == 0); // wait: transmission complete
 }
@@ -205,22 +207,22 @@ unsigned char stm32_lib_usart1_receive(void)
 
 void stm32_lib_lock_crystal(void) 
 {
-  RCC->CR |= RCC_CR_HSEON; // enable HSE
-  while(!(RCC->CR & RCC_CR_HSERDY)); // hange here until HSE ready
+  RCC->CR |= RCC_CR_HSEON;								// enable HSE
+  while(!(RCC->CR & RCC_CR_HSERDY)); 					// hang here until HSE ready
   // the following adds a wait state to Flash reads and enables the prefetch buffer. This may or may not be necessary...
   FLASH->ACR = FLASH_ACR_PRFTBE | FLASH_ACR_LATENCY;
-  RCC->CFGR |= RCC_CFGR_PLLMUL6; // PLLCLK = HSE * 6 = 8 * 6 = 48 MHz = maximum
-  RCC->CFGR |= RCC_CFGR_PLLSRC_HSE_PREDIV; // select HSE as source for PLL
-  RCC->CR |= RCC_CR_PLLON; // enable the PLL
-  while(!(RCC->CR & RCC_CR_PLLRDY)); // hang here until PLL ready
-  RCC->CFGR |= RCC_CFGR_SW_PLL; // SYSCLK sourced from PLL
-  while(!(RCC->CFGR & RCC_CFGR_SWS_PLL)); // hang until SYSLK switched
+  RCC->CFGR |= RCC_CFGR_PLLMUL6; 						// PLLCLK = HSE * 6 = 8 * 6 = 48 MHz = maximum
+  RCC->CFGR |= RCC_CFGR_PLLSRC_HSE_PREDIV; 				// select HSE as source for PLL
+  RCC->CR |= RCC_CR_PLLON; 								// enable the PLL
+  while(!(RCC->CR & RCC_CR_PLLRDY)); 					// hang here until PLL ready
+  RCC->CFGR |= RCC_CFGR_SW_PLL;							// SYSCLK sourced from PLL
+  while(!(RCC->CFGR & RCC_CFGR_SWS_PLL)); 				// hang until SYSLK switched
 }
 
 void stm32_lib_unlock_crystal(void) 
 {
-  RCC->CFGR &= ~RCC_CFGR_SW; // clear the SYSCLK selection bits, causing SYSCLK to be sourced from HSI
-  while(RCC->CFGR & RCC_CFGR_SWS_PLL); // hang until SYSLK no longer PLL
+  RCC->CFGR &= ~RCC_CFGR_SW; 			// clear the SYSCLK selection bits, causing SYSCLK to be sourced from HSI
+  while(RCC->CFGR & RCC_CFGR_SWS_PLL); 	// hang until SYSLK no longer PLL
   RCC->CR &= ~RCC_CR_HSEON;
 }
 
@@ -276,14 +278,14 @@ void stm32_lib_pwm(void)
     #define GPIO_AFRH_AFR11_AF2 ((uint32_t)0x00002000)
 
     //Initialising clocks and pins for PWM output
-    RCC->AHBENR |= RCC_AHBENR_GPIOBEN;     // Enable clock for GPIOB
-    RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;    // Enable TIM2
-    GPIOB->MODER |= GPIO_MODER_MODER10_1; // set PB10 to AF
-    GPIOB->MODER |= GPIO_MODER_MODER11_1; // set PB11 to AF
+    RCC->AHBENR |= RCC_AHBENR_GPIOBEN;    	// Enable clock for GPIOB
+    RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;  	// Enable TIM2
+    GPIOB->MODER |= GPIO_MODER_MODER10_1; 	// set PB10 to AF
+    GPIOB->MODER |= GPIO_MODER_MODER11_1; 	// set PB11 to AF
 
     //Choosing AF for pins, MAPPING them to TIM2 CH3 and CH4
-    GPIOB->AFR[1] |= (GPIO_AFRH_AFR10_AF2&(0b10<<8)); //Enable AF2 for PB10 in GPIOB AFR10
-    GPIOB->AFR[1] |= (GPIO_AFRH_AFR11_AF2&(0b10<<12));//Enable AF2 for PB11 in GPIOB AFR11
+    GPIOB->AFR[1] |= (GPIO_AFRH_AFR10_AF2&(0b10<<8)); 	//Enable AF2 for PB10 in GPIOB AFR10
+    GPIOB->AFR[1] |= (GPIO_AFRH_AFR11_AF2&(0b10<<12));	//Enable AF2 for PB11 in GPIOB AFR11
 
     // specify PWM mode: OCxM bits in CCMRx. We want mode 1
     TIM2->CCMR2 |= (TIM_CCMR2_OC3M_2 | TIM_CCMR2_OC3M_1); // PWM Mode 1
@@ -294,8 +296,8 @@ void stm32_lib_pwm(void)
     TIM2->PSC = 0;
 
     //PWM Duty cycle based on fractions of ARR
-    TIM2->CCR3 = 0 * 480; // Red = 20%
-    TIM2->CCR4 = 20 * 480; // Green = 90%
+    TIM2->CCR3 = 0 * 480; 	// Red = 20%
+    TIM2->CCR4 = 20 * 480;  // Green = 90%
 
     // Enable output compare for CH3 and CH4
     TIM2->CCER |= TIM_CCER_CC3E; //Compare 3 output enable
@@ -303,12 +305,11 @@ void stm32_lib_pwm(void)
     TIM2->CR1 |= TIM_CR1_CEN;    //Counter enable
 }
 
-void stm32_lib_uart_init(stm32_uart_state_t *uart_state, const stm32_uart_state_t *config) {
+void stm32_lib_uart_init(stm32_uart_state_t *uart_state, const stm32_uart_state_t *config) 
+{
     if (!uart_state || !config) return;
 
-    // Copy configuration to state
     memcpy(uart_state, config, sizeof(stm32_uart_state_t));
 
-    // Initialize UART hardware
     stm32_bsp_uart_init(uart_state->huart, (uint32_t)uart_state->huart->Instance, uart_state->huart->Init.BaudRate);
 }
