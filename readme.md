@@ -1,35 +1,38 @@
-# Servomotor Controller Board
+# Servo Electronics Controller Board
 
-## Abstract
+This project report documents the creation of a cost-effective servomotor controller board, aimed at providing functionality comparable to high-end commercial controllers but at a significantly reduced cost. 
 
-The purpose of this study is to design a servomotor controller board that replicates the functionality of more expensive servomotor devices but at a significantly lower cost. The controller board offers advanced control features, including serial communication hardware and temperature and current sensors, all managed by an on-board microcontroller. 
+## Project Overview
 
-The system employs a master-slave architecture, where a master device controls multiple slave controllers, communicating either a change in position or a request for information. The on-board power supply supports a wide current range, making the controller compatible with various servomotors.
+Objective: To design a servomotor controller that offers advanced control (position, current, temperature) with serial communication capabilities.
 
-All components, except for the buck converter, were successfully tested. It was discovered that the pad spacing between the IC pins on the PCB design did not include solder mask, which caused shorts between power and ground pins. This issue will be addressed in future iterations by ensuring proper solder mask application.
+## Design & Development
 
-Despite this issue, the system’s overall cost is substantially lower than commercially available servomotor controllers. While all modules functioned during testing, a revised PCB design is necessary to build a fully operational prototype.
+### Hardware
+Utilized an STM32F051C6 microcontroller, various sensors (current, temperature), a buck converter for power management, and RS485 for communication. 
 
-## Features
+### Software
+Code written in C using Atollic TrueSTUDIO for managing ADC for sensor readings, PWM for motor control, and USART for communication between master and slave units.
 
-- **Serial Communication**: Serial communication hardware for control and feedback.
-- **Sensor Integration**: On-board temperature and current sensors for real-time monitoring.
-- **Wide Current Range**: Compatible with a large range of servomotors.
-- **Master-Slave Architecture**: Centralized control of multiple slave controllers.
-- **Cost-Effective**: Lower cost compared to standard servomotor controllers on the market.
+## Testing & Results
 
-## Issues and Future Work
+### Component Testing
+Each component was tested individually. Sensors, voltage regulators, and communication chips worked as expected. 
 
-- **PCB Design**: A design flaw with the solder mask between IC pins resulted in short circuits when power was applied. Future designs will address this by improving the solder mask application between pads.
-- **Buck Converter**: The buck converter was not successfully tested and requires further debugging.
-- **Next Steps**: A second PCB design is necessary to produce a functional prototype.
+### PCB Design & Issues
+The PCB design was flawed due to missing solder mask between IC pins, leading to shorts when powered. This issue was identified during assembly, highlighting the need for precise PCB design.
 
-## Repository Contents
+## Key Findings
+- Cost: The total cost for components was R290.36, excluding PCB manufacturing and assembly.
+- Functionality: While the PCB did not function due to design errors, individual component tests proved the concept viable.
+- Lessons Learned: Importance of checking component availability in desired packages, accurate PCB footprint design, and ensuring proper isolation between IC pins.
 
-This repository contains all design files, code, and documentation related to the servomotor controller board project, including:
+## Recommendations
+- Improve PCB footprint design accuracy.
+- Ensure component package compatibility before finalizing designs.
+- Use indicator LEDs for easier debugging and test points for component testing on the PCB.
 
-- PCB design files
-- Microcontroller firmware
-- Test scripts for sensor and communication modules
-- Documentation and reports
+## Conclusion
+The project was successful in terms of conceptual design and component functionality but failed at the PCB assembly stage due to manufacturing errors. This serves as a learning opportunity for future iterations in electronic design projects.
+
 
