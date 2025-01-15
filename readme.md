@@ -1,4 +1,4 @@
-# Servo Electronics Controller Board (2019)
+# Servo Motor Controller Board (2019)
 
 This project report documents the creation of a cost-effective servomotor controller board, aimed at providing functionality comparable to high-end commercial controllers but at a significantly reduced cost. 
 
