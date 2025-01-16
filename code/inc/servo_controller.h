@@ -12,9 +12,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "stm32f0xx.h"
 #include "stm32_lib.h"
-#include "stm32_bsp.h"
 
 typedef struct {
     uint8_t max_devices;
@@ -31,9 +29,6 @@ typedef struct {
 } servo_controller_config_t;
 
 typedef struct {
-    UART_HandleTypeDef huart1;
-    bsp_state_t bsp_state;
-    stm32_uart_state_t uart_state;
     uint8_t current_target;
     uint8_t pot_value;
     uint8_t prev_pot_value;
