@@ -98,7 +98,7 @@ static bool _is_message_for_this_device(const servo_controller_state_t* state, i
 
 static int _handle_button_input(const servo_controller_state_t* state, int current_target)
 {
-    if (stm32_lib_check_button_gpioa(0)) 
+    if (stm32_lib_check_button(GPIOA, 0)) 
     {
         stm32_lib_debounce();
 
