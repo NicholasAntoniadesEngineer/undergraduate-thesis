@@ -3,7 +3,7 @@
   * @file           : stm32_bsp.h
   * @brief          : Board Support Package header file
   * @details        : Encapsulates hardware-specific functions for STM32
-  * @date           : 2024
+  * @date           : 2018
   * @author         : Nicholas Antoniades
   ******************************************************************************
   */
